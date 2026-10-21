@@ -1,0 +1,16 @@
+.{
+    .name = .zix_stat,
+    .version = "0.1.0",
+    // Changing this has security and trust implications.
+    .fingerprint = 0x1a52ac8cd564debd,
+    .minimum_zig_version = "0.17.0",
+    .dependencies = .{},
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        "tests",
+        "README.md",
+        "LICENSE",
+    },
+}

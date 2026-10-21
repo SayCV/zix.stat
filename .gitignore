@@ -1,0 +1,20 @@
+# Build output
+.zig-cache/
+zig-out/
+zig-cache/
+zig-global-tmp/
+
+# Editor and OS noise
+*.pdb
+*.obj
+*.lib
+*.dll
+*.exe
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Scratch files used while developing
+/probe.zig
+/_scratch_*.zig
