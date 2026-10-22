@@ -11,19 +11,19 @@ test "stat and lstat on a known readable path" {
     const a = try zix.stat("/proc/self/exe");
     const b = try zix.stat("/proc/self/exe");
     try std.testing.expectEqual(a.ino, b.ino);
-    try std.testing.expect(a.mode & zix.S.IFMT == zix.S.IFREG);
+    try std.testing.expect((a.mode & zix.S.IFMT) == zix.S.IFREG);
     try std.testing.expect(zix.isFile(a));
     try std.testing.expect(!zix.isDir(a));
 
     // /proc/self/exe is normally a symlink, so lstat must not follow it.
     const link = try zix.lstat("/proc/self/exe");
-    try std.testing.expect(link.mode & zix.S.IFMT == zix.S.IFLNK);
+    try std.testing.expect((link.mode & zix.S.IFMT) == zix.S.IFLNK);
     try std.testing.expect(zix.isSymLink(link));
 }
 
 test "fstatat with AT.EMPTY_PATH matches fstat" {
     const direct = try zix.fstat(1);
-    const via_at = try zix.fstatat(zix.AT.FDCWD, "", zix.AT.EMPTY_PATH);
+    const via_at = try zix.fstatat(1, "", zix.AT.EMPTY_PATH);
     try std.testing.expectEqual(direct.ino, via_at.ino);
     try std.testing.expectEqual(direct.mode, via_at.mode);
 }

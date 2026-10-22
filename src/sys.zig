@@ -270,14 +270,14 @@ fn isNamedPipeForTest(st: Stat) bool {
     return st.mode & linux.S.IFMT == linux.S.IFIFO;
 }
 
-test "stat and lstat agree for a regular file" {
+test "stat follows symlinks while lstat does not" {
     if (builtin.os.tag != .linux) return error.SkipZigTest;
 
     const path = "/proc/self/exe";
     const via_stat = try stat(path);
     const via_lstat = try lstat(path);
-    try std.testing.expectEqual(via_stat.ino, via_lstat.ino);
-    try std.testing.expect(via_stat.mode & linux.S.IFMT == linux.S.IFREG);
+    try std.testing.expect((via_stat.mode & linux.S.IFMT) == linux.S.IFREG);
+    try std.testing.expect((via_lstat.mode & linux.S.IFMT) == linux.S.IFLNK);
 }
 
 test "embedded NUL is rejected before the syscall" {
