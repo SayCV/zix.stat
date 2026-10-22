@@ -1,5 +1,7 @@
 # zix.stat
 
+[![CI](https://github.com/SayCV/zix.stat/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/SayCV/zix.stat/actions/workflows/ci.yml)
+
 `zix.stat` restores the Linux kernel `stat` family for Zig 0.17 and newer,
 without linking libc and without requiring `statx(2)`.
 
