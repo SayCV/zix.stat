@@ -222,4 +222,4 @@ and the layout probe for:
 
 ## License
 
-Proprietary; personal, non-commercial evaluation only. See `LICENSE`.
+MIT. See `LICENSE`.
