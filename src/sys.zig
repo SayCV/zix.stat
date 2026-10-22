@@ -54,6 +54,30 @@ fn hasFstatAt() bool {
         @hasField(linux.SYS, "fstatat");
 }
 
+/// Return whether the running kernel implements `statx(2)`.
+///
+/// Any error other than `ENOSYS` counts as supported. In particular, `EPERM`
+/// or `EACCES` can mean that a seccomp policy rejected the call; that is a
+/// policy decision, not evidence that the kernel lacks the syscall.
+///
+/// The probe intentionally requests only `STATX_TYPE`, so it is cheap and does
+/// not depend on filesystem support for timestamps or other optional fields.
+pub fn isStatxSupported() bool {
+    if (comptime @hasField(linux.SYS, "statx")) {
+        var stx: linux.Statx = undefined;
+        const rc = linux.statx(
+            linux.AT.FDCWD,
+            "",
+            linux.AT.EMPTY_PATH,
+            .{ .TYPE = true },
+            &stx,
+        );
+        return linux.errno(rc) != .NOSYS;
+    } else {
+        return false;
+    }
+}
+
 fn rawFstat(fd: linux.fd_t, st: *Stat) usize {
     if (comptime @hasField(linux.SYS, "fstat64")) {
         return linux.syscall2(.fstat64, fdArg(fd), @intFromPtr(st));

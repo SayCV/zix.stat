@@ -98,6 +98,23 @@ The conversion is `sec * std.time.ns_per_s + nsec`. It also handles
 pre-epoch timestamps because the kernel keeps the sign in `sec` and a
 non-negative `nsec`.
 
+### Detecting statx
+
+This package never needs `statx`, but callers that choose between `statx` and
+the legacy `stat` family can probe the running kernel:
+
+```zig
+if (zix.isStatxSupported()) {
+    // statx(2) is available.
+} else {
+    // Fall back to zix.fstat / zix.stat.
+}
+```
+
+The probe issues `statx(AT.FDCWD, "", AT.EMPTY_PATH, STATX_TYPE, &stx)` and
+returns `false` only for `ENOSYS`. Errors such as `EPERM` or `EACCES` mean a
+sandbox or seccomp policy rejected the call, not that the syscall is missing.
+
 `stat`, `lstat`, and `fstatat` accept `[]const u8` paths. The
 null-terminated variants are available as `statZ`, `lstatZ`, and
 `fstatatZ` for callers that already own a C string.

@@ -51,6 +51,7 @@ pub const stat = sys.stat;
 pub const statZ = sys.statZ;
 pub const lstat = sys.lstat;
 pub const lstatZ = sys.lstatZ;
+pub const isStatxSupported = sys.isStatxSupported;
 
 /// Convenience wrapper for `std.Io.File`.
 pub fn fstatFile(file: std.Io.File) FStatError!Stat {

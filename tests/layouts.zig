@@ -46,6 +46,7 @@ export fn zixStatCompileProbe(fd: i32) void {
 
     _ = zix.kind(st);
     _ = zix.isDir(st);
+    _ = zix.isStatxSupported();
     _ = zix.toTimestamp(st.atime());
     _ = zix.atimeTimestamp(st);
     _ = zix.mtimeTimestamp(st);
